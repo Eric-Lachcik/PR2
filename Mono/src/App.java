@@ -13,7 +13,7 @@ public class App {
       "1.¿Por qué? ¿Acaso querías pedir uno prestado?",
       "2.Me alegra que asistieras a tu reunión familiar diaria.",
       "3.Qué apropiado, tú peleas como una vaca.",
-      "4.Qué apropiado, tú peleas como una vaca."};
+      "4.Te habrá enseñado todo lo que sabes."};
       int i = 0;
       int y = 0;
       int Jugador1 = 4;
@@ -25,32 +25,43 @@ public class App {
       System.out.println("Tu turno es "+ alea);
 
       if ( alea == 1) {
-        System.out.println("Empiezas primero, estas son tus opciones, elige del 1 al 4 ");
+        System.out.println("Eres Jugador1, estas son tus opciones, elige del 1 al 4 ");
         for(int n = 0; n < insultos.length; n++)
         {
             // Imprimimos los elementos del array en pantalla.
             System.out.println(insultos[n]);
-        
-      }
-        insultos[i] = scan.nextLine();
+      
+        }
+        if (scan.hasNextInt()) {
+          int numeroIngresado = scan.nextInt();
+              String insulto = insultos[numeroIngresado];
+              System.out.println("Insulto seleccionado: " + insulto);
+
+        }
       }
       if (alea == 2){
-        System.out.println("Empiezas segundo, estas son tus opciones , elige del 1 al 4");
+        System.out.println("Eres Jugador2, estas son tus opciones , elige del 1 al 4");
         for(int m = 0; m < contestaciones.length; m++)
         {
             // Imprimimos los elementos del array en pantalla.
             System.out.println(contestaciones[m]);
         
         }  
-        contestaciones[y] = scan.nextLine();
+        if (scan.hasNextInt()) {
+          int numeroIngresado = scan.nextInt();
+              String contestacion = contestaciones[numeroIngresado];
+              System.out.println("Contestacion seleccionado: " + contestacion);
+        }
       }
-      while (Jugador1 > 0 || Jugador2 > 0) {
-        
-      }
-
-
-
-
   }
 }
+      
+      
+      
+
+
+
+  
+
+
 
