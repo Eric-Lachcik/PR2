@@ -16,6 +16,7 @@ public class App {
         "Te habrá enseñado todo lo que sabes." };
     int turno = 0;
     String resp = "---";
+    String heresy = "=>";
     int Jugador1 = 0;
     int Jugador2 = 0;
     Scanner scan = new Scanner(System.in);
@@ -46,8 +47,10 @@ public class App {
 
         }
         valor++;
+        IA = ram.nextInt(1, 5);
+
       } else {
-        System.out.println(resp + insultos[IA]);
+        System.out.println(heresy+ insultos[IA]);
         System.out.println("Empiezas Segundo, estas son tus opciones , elige del 1 al 4 ");
         for (int m = 0; m < contestaciones.length; m++) {
           System.out.println(resp + contestaciones[m]);
@@ -67,6 +70,7 @@ public class App {
           }
         }
         valor = 0;
+        IA = ram.nextInt(1, 5);
       }
 
       turno++;
