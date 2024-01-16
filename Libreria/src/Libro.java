@@ -1,12 +1,12 @@
 public class Libro {
     private final String Titulo;
     private final String Autor;
-    private int cualificacion;
+    private int calificacion;
     
     public Libro(String Titulo, String Autor, int cualificacion){
         this.Titulo = Titulo;
         this.Autor = Autor;
-        this.cualificacion = cualificacion;    
+        this.calificacion = cualificacion;    
     }
     public String getTitulo(){
         return Titulo;
@@ -14,10 +14,14 @@ public class Libro {
     public String getAutor(){
         return Autor;
     }
-    public int getCualificacion(){
-        return cualificacion;
+    public int getCalificacion(){
+        return calificacion;
     }
-    public void setCualificacion(int cualificacion){
-        this.cualificacion = cualificacion;
+    public void setCalificacion(int calificacion){
+        if(calificacion >= 0 && calificacion <= 10){
+            this.calificacion = calificacion;
+        }else{
+            System.out.println(" La calificación introducida esta fuera de los límites ");
+        }
     }
 }
