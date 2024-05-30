@@ -2,12 +2,13 @@
 import java.sql.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.*;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        circuitos();
+        Equipos();
     }
 
     public static void Top10() {
@@ -61,12 +62,7 @@ public class App {
         tableEquipos.setColumnIdentifiers(columnEquipos);
 
         JTable Equipos = new JTable(tableEquipos);
-        JScrollPane PaneEquipos = new JScrollPane(Equipos);
-
-        frame.add(PaneEquipos);
-        frame.pack();
-        frame.setSize(600, 349);
-        frame.setVisible(true);
+      
         try {
             String url = "jdbc:mysql://localhost:3306/basejava";
             Connection con = DriverManager.getConnection(url, "root", "");
@@ -86,6 +82,65 @@ public class App {
         } catch (SQLException e) {
             System.out.println(e);
         }
+        JScrollPane PaneEquipos = new JScrollPane(Equipos);
+        frame.add(PaneEquipos, BorderLayout.CENTER);
+
+        JButton addButton = new JButton("Añadir Equipo");
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame addFrame = new JFrame("Add Team");
+                addFrame.setLayout(new GridLayout(3, 2));
+
+                JLabel nameLabel = new JLabel("Team Name:");
+                JTextField nameField = new JTextField();
+                JLabel directorLabel = new JLabel("Director:");
+                JTextField directorField = new JTextField();
+
+                JButton submitButton = new JButton("Submit");
+                submitButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        String name = nameField.getText();
+                        String director = directorField.getText();
+
+                        try {
+                            String url = "jdbc:mysql://localhost:3306/basejava";
+                            Connection con = DriverManager.getConnection(url, "root", "");
+
+                            String sql = "INSERT INTO equipo (Nombre, Director_Deportivo) VALUES (?, ?)";
+                            PreparedStatement inst = con.prepareStatement(sql);
+                            inst.setString(1, name);
+                            inst.setString(2, director);
+                            inst.executeUpdate();
+                            
+
+                        } catch (SQLException ex) {
+                            System.out.println(ex.getMessage());
+                        }
+
+                        nameField.setText("");
+                        directorField.setText("");
+                        addFrame.dispose();
+                    }
+                });
+
+                addFrame.add(nameLabel);
+                addFrame.add(nameField);
+                addFrame.add(directorLabel);
+                addFrame.add(directorField);
+                addFrame.add(submitButton);
+
+                addFrame.pack();
+                addFrame.setVisible(true);
+            }
+        
+        });
+
+        frame.add(addButton, BorderLayout.SOUTH);
+        frame.pack();
+        frame.setSize(600, 349);
+        frame.setVisible(true);
     }
     public static void Pilotos(){
         JFrame frame = new JFrame("Pilotos");
@@ -103,7 +158,7 @@ public class App {
         JPanel panelPiloto = new JPanel();
         panelPiloto.add(PanePilotos);
         frame.add(panelPiloto);
-        // frame.pack();
+        frame.pack();
         frame.setSize(600, 600);
         frame.setVisible(true);
        
