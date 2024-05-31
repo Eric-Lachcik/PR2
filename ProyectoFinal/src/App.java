@@ -8,47 +8,70 @@ import java.awt.*;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        Equipos();
+       Top10();
     }
 
     public static void Top10() {
-        JFrame frame = new JFrame("Clasificacion Top 10");
+        JFrame frame = new JFrame("Clasificación Top 10");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(new GridLayout(4, 1));
-
+        frame.setLayout(new BorderLayout());
+    
         DefaultTableModel tableTop10 = new DefaultTableModel();
-
         String columnTop10[] = {"Posicion", "Puntos", "Piloto_Id", "Equipo_Nombre"}; 
-
         tableTop10.setColumnIdentifiers(columnTop10);
-
         JTable Top10 = new JTable(tableTop10);
         JScrollPane Pane10 = new JScrollPane(Top10);
+        frame.add(Pane10, BorderLayout.CENTER);
+        
+        String url = "jdbc:mysql://localhost:3306/basejava";
+        try (Connection con = DriverManager.getConnection(url, "root", "")) {
+            Statement myst = con.createStatement();
+            ResultSet rs = myst.executeQuery("SELECT * FROM clasificacion");
+            while (rs.next()) {
+                String posicion = rs.getString("Posicion");
+                String puntos = rs.getString("Puntos");
+                String piloto_id = rs.getString("Piloto_Id");
+                String equipo_nombre = rs.getString("Equipo_Nombre");
+                tableTop10.addRow(new Object[]{posicion, puntos, piloto_id, equipo_nombre});
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
 
-        frame.add(Pane10);
+        JButton sortButton = new JButton("Ordenar Puntos");
+       
+        sortButton.addActionListener(new ActionListener() {
+            boolean ascending = true;
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+    
+                String url = "jdbc:mysql://localhost:3306/basejava";
+                try (Connection con = DriverManager.getConnection(url, "root", "")) {
+                    Statement myst = con.createStatement();
+                    String order = ascending ? "ASC" : "DESC";
+                    ResultSet rs = myst.executeQuery("select * from clasificacion" + " ORDER BY Puntos " + order);
+                    tableTop10.setRowCount(0);
+    
+                    while (rs.next()) {
+                        String posicion = rs.getString("Posicion");
+                        String puntos = rs.getString("Puntos");
+                        String piloto_id = rs.getString("Piloto_Id");
+                        String equipo_nombre = rs.getString("Equipo_Nombre");
+                        tableTop10.addRow(new Object[]{posicion, puntos, piloto_id, equipo_nombre});
+                    }
+    
+                    ascending = !ascending; // Reverse the order for the next click
+                } catch (SQLException ex) {
+                    System.out.println(ex.getMessage());
+                }
+            }
+        });
+    
+        frame.add(sortButton, BorderLayout.SOUTH);
         frame.pack();
         frame.setSize(600, 600);
         frame.setVisible(true);
-        try {
-            String url = "jdbc:mysql://localhost:3306/basejava";
-            Connection con = DriverManager.getConnection(url, "root", "");
-
-            Statement myst = con.createStatement();
-            ResultSet rs = myst.executeQuery("select * from clasificacion");
-            tableTop10.setRowCount(0);
-
-            while (rs.next()) {
-                String Posicion = String.valueOf(rs.getInt("Posicion"));
-                String Puntos = String.valueOf(rs.getInt("Puntos"));
-                String Nombre = rs.getString("Piloto_Id");
-                String Equipo_Nombre = rs.getString("Equipo_Nombre");
-
-                tableTop10.addRow(new Object[]{Posicion, Puntos, Nombre, Equipo_Nombre});
-            }
-            
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
     }
     public static void Equipos(){
         JFrame frame = new JFrame("Equipos");
@@ -86,15 +109,16 @@ public class App {
         frame.add(PaneEquipos, BorderLayout.CENTER);
 
         JButton addButton = new JButton("Añadir Equipo");
+        addButton.setPreferredSize(new Dimension(100, 50)); 
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFrame addFrame = new JFrame("Add Team");
+                JFrame addFrame = new JFrame("Añadir");
                 addFrame.setLayout(new GridLayout(3, 2));
 
-                JLabel nameLabel = new JLabel("Team Name:");
+                JLabel nameLabel = new JLabel("Nombre Equipo:");
                 JTextField nameField = new JTextField();
-                JLabel directorLabel = new JLabel("Director:");
+                JLabel directorLabel = new JLabel("Director Deportivo:");
                 JTextField directorField = new JTextField();
 
                 JButton submitButton = new JButton("Submit");
@@ -136,8 +160,10 @@ public class App {
             }
         
         });
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(addButton);
 
-        frame.add(addButton, BorderLayout.SOUTH);
+        frame.add(buttonPanel, BorderLayout.SOUTH);
         frame.pack();
         frame.setSize(600, 349);
         frame.setVisible(true);
