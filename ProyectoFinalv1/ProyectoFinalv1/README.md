@@ -94,15 +94,4 @@ La aplicación se conecta a una base de datos MySQL llamada `basejava`. A contin
 | Fecha      | DATE     |
 | Piloto_Id  | INT      |
 
-## Requisitos Previos
 
-- Java Development Kit (JDK) instalado.
-- MySQL Database Server instalado y corriendo.
-- Base de datos `basejava` configurada con las tablas mencionadas.
-- Dependencias de JDBC (Java Database Connectivity) incluidas en el proyecto.
-
-## Compilación y Ejecución
-
-1. **Compilar el código**:
-   ```bash
-   javac App.java
